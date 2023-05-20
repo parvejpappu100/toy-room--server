@@ -25,6 +25,24 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+    const carToysCollection = client.db("toyVroom").collection("carToys");
+
+    // * Toy get all toys api:
+    app.get("/toys" , async(req , res) => {
+        const cursor = carToysCollection.find();
+        const result = await cursor.toArray();
+        res.send(result);
+    })
+
+    // * To get newToy from client side and set server side:
+    app.post("/addedToy" , async(req , res) => {
+        const newToy = req.body;
+        console.log(newToy);
+        const result = await carToysCollection.insertOne(newToy);
+        res.send(result);
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
