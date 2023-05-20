@@ -1,6 +1,6 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 require("dotenv").config();
 const app = express();
 const port = process.env.PORT || 5000;
@@ -36,7 +36,6 @@ async function run() {
 
     // * To display added toy client side:
     app.get("/carToys", async (req, res) => {
-      console.log(req.query)
       let query = {};
       if(req.query?.email){
         query = {email: req.query.email}
@@ -50,10 +49,17 @@ async function run() {
     // * To get newToy from client side and set server side:
     app.post("/carToys", async (req, res) => {
       const newToy = req.body;
-      console.log(newToy);
       const result = await carToysCollection.insertOne(newToy);
       res.send(result);
     });
+
+    // * For delete my toy page toy:
+    app.delete("/carToys/:id" , async(req , res) => {
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)};
+      const result = await carToysCollection.deleteOne(query);
+      res.send(result);
+    })
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
