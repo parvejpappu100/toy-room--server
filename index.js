@@ -28,7 +28,14 @@ async function run() {
     const carToysCollection = client.db("toyVroom").collection("carToys");
 
     // * Toy get all toys api:
-    app.get("/toys", async (req, res) => {
+    app.get("/toys" , async(req , res) => {
+      const cursor = carToysCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+
+    app.get("/searchToys", async (req, res) => {
       const search = req.query.search;
       const query = {name: {$regex: search , $options: "i"}}
 
