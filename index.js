@@ -41,7 +41,7 @@ async function run() {
         query = { email: req.query.email };
       }
       
-      const cursor = carToysCollection.find(query).sort( { price: -1 } );
+      const cursor = carToysCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
