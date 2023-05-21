@@ -29,7 +29,10 @@ async function run() {
 
     // * Toy get all toys api:
     app.get("/toys", async (req, res) => {
-      const cursor = carToysCollection.find();
+      const search = req.query.search;
+      const query = {name: {$regex: search , $options: "i"}}
+
+      const cursor = carToysCollection.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
