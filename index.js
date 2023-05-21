@@ -40,8 +40,8 @@ async function run() {
       if (req.query?.email) {
         query = { email: req.query.email };
       }
-
-      const cursor = carToysCollection.find(query);
+      
+      const cursor = carToysCollection.find(query).sort( { price: -1 } );
       const result = await cursor.toArray();
       res.send(result);
     });
